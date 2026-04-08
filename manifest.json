@@ -1,0 +1,17 @@
+{
+  "name": "888win Supreme",
+  "short_name": "888win",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#ff0000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/rfpShJDM/1775625485047.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
