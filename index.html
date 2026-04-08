@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>888win | SUPREME</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff0000">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/rfpShJDM/1775625485047.png">
+
+    <style>
+        :root {
+            --primary-red: #ff0000;
+            --dark-red: #8b0000;
+            --bg-black: #050505;
+            --card-bg: #121212;
+            --item-bg: #1a1a1a;
+            --text-main: #ffffff;
+            --text-grey: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: #000;
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-shell {
+            width: 360px;
+            height: 640px;
+            background: var(--bg-black);
+            border: 2px solid #222;
+            border-radius: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+        }
+
+        /* TELAS */
+        .screen { display: none; width: 100%; height: 100%; flex-direction: column; }
+        .active { display: flex; }
+
+        /* TELA LOGIN */
+        #login-screen { justify-content: center; align-items: center; padding: 30px; box-sizing: border-box; }
+        .login-box { width: 100%; text-align: center; }
+        .logo-img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary-red); margin-bottom: 15px; }
+        
+        input { 
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 8px; 
+            border: 1px solid var(--primary-red); background: #111; color: white; outline: none;
+        }
+
+        /* HEADER E ABAS */
+        .app-header { background-color: var(--primary-red); padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .app-header h1 { margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .tabs { display: flex; background: #0f0f0f; border-bottom: 1px solid #222; }
+        .tab-btn { flex: 1; padding: 15px; text-align: center; font-size: 11px; text-transform: uppercase; color: var(--text-grey); cursor: pointer; }
+        .tab-btn.active { color: #fff; border-bottom: 2px solid var(--primary-red); background: #181818; }
+
+        .content { flex: 1; overflow-y: auto; padding: 15px; }
+        .section-title { color: var(--primary-red); font-size: 11px; margin: 15px 0 10px; text-transform: uppercase; }
+
+        /* CARDS DE FUNÇÃO */
+        .func-card {
+            background: var(--item-bg); padding: 15px; margin-bottom: 8px; border-radius: 5px;
+            display: flex; align-items: center; cursor: pointer; transition: 0.2s;
+        }
+        .check-box { width: 18px; height: 18px; border: 2px solid #444; margin-right: 15px; border-radius: 3px; position: relative; }
+        .func-card.selected .check-box { border-color: var(--primary-red); background: rgba(255,0,0,0.1); }
+        .func-card.selected .check-box::after { content: '✓'; position: absolute; top: -2px; left: 2px; color: var(--primary-red); font-weight: bold; }
+
+        .btn-main { background: var(--primary-red); color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        
+        /* RESULTADOS E LOGS */
+        .result-box { background: #000; border: 1px solid #333; padding: 15px; margin-top: 15px; border-radius: 5px; text-align: center; }
+        #injection-log { background: #000; color: #00ff00; font-family: monospace; font-size: 10px; padding: 10px; height: 80px; overflow: hidden; margin-top: 10px; border: 1px solid #222; display: none; }
+        .progress-container { width: 100%; background: #222; height: 4px; margin-top: 10px; display: none; }
+        .progress-bar { width: 0%; height: 100%; background: var(--primary-red); transition: width 0.3s; }
+
+        .insta-link { display: block; text-align: center; padding: 20px; color: var(--text-grey); text-decoration: none; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="app-shell" id="app-body">
+    
+    <div id="login-screen" class="screen active">
+        <div class="login-box">
+            <img src="https://i.ibb.co/rfpShJDM/1775625485047.png" class="logo-img">
+            <h2 style="color: var(--primary-red); margin: 0;">888WIN</h2>
+            <p style="font-size: 10px; color: #555;">SUPREME ACCESS</p>
+            <input type="password" id="pass" placeholder="DIGITE A SENHA">
+            <button class="btn-main" onclick="validarSenha()">ENTRAR</button>
+        </div>
+    </div>
+
+    <div id="click-detector" class="screen" style="justify-content: center; align-items: center;">
+        <p style="color: #080808;">Configurando ambiente...</p>
+    </div>
+
+    <div id="main-panel" class="screen">
+        <header class="app-header">
+            <h1>888WIN | SUPREME</h1>
+            <span style="font-weight: bold; cursor:pointer;" onclick="location.reload()">X</span>
+        </header>
+
+        <nav class="tabs">
+            <div class="tab-btn active" onclick="switchTab(this, 'tab-auxilio')">Auxílio</div>
+            <div class="tab-btn" onclick="switchTab(this, 'tab-sensi')">Sensi</div>
+            <div class="tab-btn" onclick="switchTab(this, 'tab-inj')">Injetor</div>
+        </nav>
+
+        <div class="content">
+            <div id="tab-auxilio" class="tab-page" style="display: block;">
+                <div class="section-title">COMBAT ASSIST</div>
+                <div class="func-card" onclick="this.classList.toggle('selected')"><div class="check-box"></div>Aimbot Elite 100%</div>
+                <div class="func-card" onclick="this.classList.toggle('selected')"><div class="check-box"></div>Aim Lock (Suave)</div>
+                <div class="func-card" onclick="this.classList.toggle('selected')"><div class="check-box"></div>Tiro Mágico (Hitbox)</div>
+                <div class="section-title">ESTABILIDADE</div>
+                <div class="func-card" onclick="this.classList.toggle('selected')"><div class="check-box"></div>No Recoil</div>
+                <div class="func-card" onclick="this.classList.toggle('selected')"><div class="check-box"></div>Anti-Shake</div>
+            </div>
+
+            <div id="tab-sensi" class="tab-page" style="display: none;">
+                <div class="section-title">GERADOR DE SENSIBILIDADE</div>
+                <select id="sensi-type" style="width: 100%; padding: 12px; background: #222; color: white; border: 1px solid #444; border-radius: 5px; margin-bottom: 10px;">
+                    <option value="extreme">EXTREMA (ATÉ 200)</option>
+                    <option value="alta">ALTA (INSTA PLAYER)</option>
+                    <option value="media">MÉDIA (EQUILIBRADA)</option>
+                </select>
+                <button class="btn-main" onclick="gerarSensi()">GERAR SENSI + DPI</button>
+                <div id="sensi-res" class="result-box" style="display:none">
+                    <p id="res-data" style="color: #00ff00; font-family: monospace; font-size: 15px;"></p>
+                </div>
+            </div>
+
+            <div id="tab-inj" class="tab-page" style="display: none;">
+                <div class="section-title">INJEÇÃO DE SCRIPTS</div>
+                <button id="btn-inj" class="btn-main" onclick="simularInjecao()">INJETAR AGORA</button>
+                
+                <div class="progress-container" id="p-container"><div class="progress-bar" id="p-bar"></div></div>
+                <div id="injection-log"></div>
+
+                <button class="btn-main" style="background: #222; margin-top: 20px;" onclick="window.location.href='android-app://com.dts.freefireth'">ABRIR FREE FIRE</button>
+                
+                <a href="https://www.instagram.com/miguel_v_.7?igsh=MXgwb2pycW5obzRsNw==" target="_blank" class="insta-link">
+                    DEV: @MIGUEL_V_.7
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Registro do Service Worker para PWA
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+    }
+
+    let clicks = 0;
+
+    function validarSenha() {
+        if(document.getElementById('pass').value === "1102") {
+            document.getElementById('login-screen').classList.remove('active');
+            document.getElementById('click-detector').classList.add('active');
+            
+            // Inicia detecção de 5 cliques invisíveis
+            document.getElementById('app-body').onclick = function() {
+                clicks++;
+                if(clicks >= 5) {
+                    document.getElementById('click-detector').classList.remove('active');
+                    document.getElementById('main-panel').classList.add('active');
+                    document.getElementById('app-body').onclick = null;
+                }
+            };
+        } else { alert("Senha Incorreta!"); }
+    }
+
+    function switchTab(btn, tabId) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-page').forEach(p => p.style.display = 'none');
+        btn.classList.add('active');
+        document.getElementById(tabId).style.display = 'block';
+    }
+
+    function gerarSensi() {
+        const tipo = document.getElementById('sensi-type').value;
+        let g, dpi = Math.floor(Math.random() * (1200 - 360 + 1)) + 360;
+
+        if(tipo === 'extreme') g = r(170, 200);
+        else if(tipo === 'alta') g = r(110, 150);
+        else g = r(90, 100);
+
+        document.getElementById('sensi-res').style.display = 'block';
+        document.getElementById('res-data').innerHTML = `<b>DPI: ${dpi}</b><br>GERAL: ${g}<br>RED DOT: ${r(80, 200)}<br>2X: ${r(80, 200)}`;
+    }
+
+    function simularInjecao() {
+        const btn = document.getElementById('btn-inj');
+        const log = document.getElementById('injection-log');
+        const pCont = document.getElementById('p-container');
+        const pBar = document.getElementById('p-bar');
+        
+        btn.disabled = true;
+        btn.innerText = "INJETANDO...";
+        log.style.display = "block";
+        pCont.style.display = "block";
+        log.innerHTML = "";
+        
+        const frases = [
+            "> Localizando Free Fire...",
+            "> Bypass v3.2 [ATIVADO]",
+            "> Injetando scripts 888win...",
+            "> Calibrando Sensibilidade...",
+            "> SUCESSO: Scripts Ativos!"
+        ];
+
+        let i = 0, progresso = 0;
+        const interval = setInterval(() => {
+            if(i < frases.length) {
+                log.innerHTML += frases[i] + "<br>";
+                progresso += 20;
+                pBar.style.width = progresso + "%";
+                i++;
+            } else {
+                clearInterval(interval);
+                btn.innerText = "CONCLUÍDO!";
+                btn.style.background = "#00ff00";
+            }
+        }, 1000);
+    }
+
+    function r(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+</script>
+
+</body>
+</html>
